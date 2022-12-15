@@ -1,20 +1,20 @@
 const { GraphQLList, GraphQLInt } = require("graphql");
-const { getPostByUser } = require("../../model/postModel");
+const { getPostsByUser } = require("../../model/postModel");
 const { post } = require("../typedef");
 
-const postByUser = {
+const postsByUser = {
   type: new GraphQLList(post),
   description: "Return all post from a user",
   args: {
     id: { type: GraphQLInt },
   },
-  async resolve() {
-    console.log(args);
-    const posts = await getPostByUser(this.args.id);
+  async resolve(root, args) {
+    const posts = await getPostsByUser(args.id);
+    console.log(posts);
     return posts;
   },
 };
 
 module.exports = {
-  postByUser,
+  postsByUser,
 };

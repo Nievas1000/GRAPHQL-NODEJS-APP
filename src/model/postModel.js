@@ -15,7 +15,7 @@ const insertPost = (date, img, description, id_author) => {
   );
 };
 
-const getPostByUser = (id) =>
+const getPostsByUser = (id) =>
   new Promise((resolve, rejected) => {
     db.query(
       "SELECT * FROM post WHERE id_author = ?",
@@ -30,7 +30,35 @@ const getPostByUser = (id) =>
     );
   });
 
+const getPost = (id) =>
+  new Promise((resolve, rejected) => {
+    db.query("SELECT * FROM post WHERE id = ?", [id], (error, result) => {
+      if (error) {
+        rejected(error);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+
+const actualizePost = (id, date, img, description, id_author) =>
+  new Promise((resolve, rejected) => {
+    db.query(
+      "UPDATE post SET date=?, img=?, description=? WHERE id=? AND id_author=?",
+      [date, img, description, id, id_author],
+      (error, result) => {
+        if (error) {
+          rejected(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+
 module.exports = {
   insertPost,
-  getPostByUser,
+  getPostsByUser,
+  getPost,
+  actualizePost,
 };

@@ -19,7 +19,16 @@ const post = new GraphQLObjectType({
   },
 });
 
+const responseOk = new GraphQLObjectType({
+  name: "ResponseOk",
+  fields: {
+    status: { type: GraphQLInt },
+    message: { type: GraphQLString },
+  },
+});
+
 module.exports = {
   user,
   post,
+  responseOk,
 };

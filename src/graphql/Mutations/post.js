@@ -1,6 +1,6 @@
-const { GraphQLInt, GraphQLString } = require("graphql");
+const { GraphQLInt, GraphQLString, GraphQLList } = require("graphql");
 const { post } = require("../typedef");
-const { insertPost } = require("../../model/postModel");
+const { insertPost, actualizePost, getPost } = require("../../model/postModel");
 
 const createPost = {
   type: GraphQLString,
@@ -18,6 +18,25 @@ const createPost = {
   },
 };
 
+const updatePost = {
+  type: new GraphQLList(post),
+  description: "Update a post.",
+  args: {
+    id: { type: GraphQLInt },
+    date: { type: GraphQLString },
+    img: { type: GraphQLString },
+    description: { type: GraphQLString },
+    id_author: { type: GraphQLInt },
+  },
+  async resolve(root, args) {
+    const { id, date, img, description, id_author } = args;
+    await actualizePost(id, date, img, description, id_author);
+    const newPost = await getPost(id);
+    return newPost;
+  },
+};
+
 module.exports = {
   createPost,
+  updatePost,
 };
