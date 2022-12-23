@@ -1,6 +1,7 @@
-const { GraphQLString } = require("graphql");
+const { GraphQLString, GraphQLList } = require("graphql");
 const { createUser, getUserByMail } = require("../../model/userModel");
 const { encrypt, compare } = require("../../Helpers/handleBcrypt");
+const { user } = require("../typedef");
 
 const registrerUser = {
   type: GraphQLString,
@@ -24,7 +25,7 @@ const registrerUser = {
 };
 
 const loginUser = {
-  type: GraphQLString,
+  type: user,
   description: "Login user",
   args: {
     email: { type: GraphQLString },
@@ -33,15 +34,16 @@ const loginUser = {
   async resolve(root, args) {
     const { email, password } = args;
     const userExist = await getUserByMail(email);
+    console.log(userExist[0]);
     if (userExist.length > 0) {
       const passwordCorrect = await compare(password, userExist[0].password);
       if (passwordCorrect) {
-        return userExist[0].email;
+        return userExist[0];
       } else {
-        return "Wrong email/password combination";
+        throw new Error("Wrong email/password combination");
       }
     } else {
-      return "User doesn't exist";
+      throw new Error("User doesn't exist");
     }
   },
 };
