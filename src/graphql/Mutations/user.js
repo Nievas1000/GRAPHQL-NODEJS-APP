@@ -19,7 +19,7 @@ const registrerUser = {
       createUser(email, hashPassword, username);
       return "User create!";
     } else {
-      return "Email already exists";
+      throw new Error("Email already exists");
     }
   },
 };

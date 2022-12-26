@@ -6,6 +6,11 @@ const user = new GraphQLObjectType({
     username: { type: GraphQLString },
     password: { type: GraphQLString },
     email: { type: GraphQLString },
+    image: { type: GraphQLString },
+    publications: { type: GraphQLInt },
+    followers: { type: GraphQLInt },
+    followed: { type: GraphQLInt },
+    description: { type: GraphQLString },
   },
 });
 
