@@ -1,5 +1,5 @@
 const { GraphQLString, GraphQLList } = require("graphql");
-const { getUsers } = require("../../model/userModel");
+const { getUsers, getUserByMail } = require("../../model/userModel");
 const { user } = require("../typedef");
 
 const users = {
@@ -11,4 +11,21 @@ const users = {
   },
 };
 
-module.exports = { users };
+const getUserByEmail = {
+  type: user,
+  description: "Return user by email",
+  args: {
+    email: { type: GraphQLString },
+  },
+  async resolve(root, args) {
+    const { email } = args;
+    const userExist = await getUserByMail(email);
+    if (userExist.length > 0) {
+      return userExist[0];
+    } else {
+      throw new Error("User doesn't exist");
+    }
+  },
+};
+
+module.exports = { users, getUserByEmail };

@@ -1,5 +1,5 @@
 const { GraphQLObjectType, GraphQLSchema } = require("graphql");
-const { users } = require("./Queries/user");
+const { users, getUserByEmail } = require("./Queries/user");
 const { registrerUser, loginUser } = require("./Mutations/user");
 const { postsByUser } = require("./Queries/post");
 const { createPost, updatePost } = require("./Mutations/post");
@@ -18,6 +18,7 @@ const MutationType = new GraphQLObjectType({
   description: "The root mutation type",
   fields: {
     registrerUser,
+    getUserByEmail,
     loginUser,
     createPost,
     updatePost,

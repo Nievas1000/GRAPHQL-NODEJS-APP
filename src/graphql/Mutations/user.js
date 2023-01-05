@@ -34,7 +34,6 @@ const loginUser = {
   async resolve(root, args) {
     const { email, password } = args;
     const userExist = await getUserByMail(email);
-    console.log(userExist[0]);
     if (userExist.length > 0) {
       const passwordCorrect = await compare(password, userExist[0].password);
       if (passwordCorrect) {
