@@ -1,31 +1,29 @@
-const { GraphQLString, GraphQLList } = require("graphql");
-const { getUsers, getUserByMail } = require("../../model/userModel");
-const { user } = require("../typedef");
+const { compare } = require("../../Helpers/handleBcrypt");
+const { getUserByMail } = require("../../model/userModel");
 
-const users = {
-  type: new GraphQLList(user),
-  description: "Return all users",
-  async resolve() {
-    const users = await getUsers();
-    return users;
-  },
+const getUserByEmail = async (root, args) => {
+  const { email } = args;
+  const userExist = await getUserByMail(email);
+  if (userExist.length > 0) {
+    return userExist[0];
+  } else {
+    throw new Error("User doesn't exist");
+  }
 };
 
-const getUserByEmail = {
-  type: user,
-  description: "Return user by email",
-  args: {
-    email: { type: GraphQLString },
-  },
-  async resolve(root, args) {
-    const { email } = args;
-    const userExist = await getUserByMail(email);
-    if (userExist.length > 0) {
+const loginUser = async (root, args) => {
+  const { email, password } = args;
+  const userExist = await getUserByMail(email);
+  if (userExist.length > 0) {
+    const passwordCorrect = await compare(password, userExist[0].password);
+    if (passwordCorrect) {
       return userExist[0];
     } else {
-      throw new Error("User doesn't exist");
+      throw new Error("Wrong email/password combination");
     }
-  },
+  } else {
+    throw new Error("User doesn't exist");
+  }
 };
 
-module.exports = { users, getUserByEmail };
+module.exports = { getUserByEmail, loginUser };

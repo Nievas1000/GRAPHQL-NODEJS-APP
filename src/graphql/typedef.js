@@ -1,39 +1,47 @@
-const { GraphQLObjectType, GraphQLString, GraphQLInt } = require("graphql");
+const { gql } = require("apollo-server-express");
 
-const user = new GraphQLObjectType({
-  name: "UserType",
-  fields: {
-    username: { type: GraphQLString },
-    password: { type: GraphQLString },
-    email: { type: GraphQLString },
-    image: { type: GraphQLString },
-    publications: { type: GraphQLInt },
-    followers: { type: GraphQLInt },
-    followed: { type: GraphQLInt },
-    description: { type: GraphQLString },
-  },
-});
+const typeDefs = gql`
+  type User {
+    username: String
+    password: String
+    email: String
+    image: String
+    publications: Int
+    followers: Int
+    followed: Int
+    description: String
+  }
+  type Post {
+    date: String
+    img: String
+    description: String
+    id_author: Int
+  }
 
-const post = new GraphQLObjectType({
-  name: "PostType",
-  fields: {
-    date: { type: GraphQLString },
-    img: { type: GraphQLString },
-    description: { type: GraphQLString },
-    id_author: { type: GraphQLInt },
-  },
-});
+  type Query {
+    postsByUser(id: Int!): [Post]
+    getUserByEmail(email: String!): User
+    loginUser(email: String!, password: String!): User
+  }
 
-const responseOk = new GraphQLObjectType({
-  name: "ResponseOk",
-  fields: {
-    status: { type: GraphQLInt },
-    message: { type: GraphQLString },
-  },
-});
+  type Mutations {
+    createPost(
+      date: String!
+      img: String!
+      description: String!
+      id_author: Int!
+    ): String
+    updatePost(
+      id: Int!
+      date: String!
+      img: String!
+      description: String!
+      id_author: Int!
+    ): String
+    registrerUser(email: String!, password: String!, username: String!): String
+  }
+`;
 
 module.exports = {
-  user,
-  post,
-  responseOk,
+  typeDefs,
 };
