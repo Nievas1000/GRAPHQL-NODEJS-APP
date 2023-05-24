@@ -1,22 +1,18 @@
 const { getUserByEmail, loginUser } = require("./Queries/user");
-const { postsByUser } = require("./Queries/post");
-const { createPost, updatePost } = require("./Mutations/post");
 const { registrerUser } = require("./Mutations/user");
 
 const Query = {
-  postsByUser,
   getUserByEmail,
   loginUser,
 };
 
-const Mutations = {
-  createPost,
-  updatePost,
+const Mutation = {
   registrerUser,
 };
 
 const resolvers = {
   Query,
+  Mutation,
 };
 
 module.exports = { resolvers };
