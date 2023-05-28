@@ -3,6 +3,13 @@ const { gql } = require("apollo-server-express");
 const typeDefs = gql`
   scalar Upload
 
+  type Coment {
+    id: Int
+    id_post: Int
+    coment: String
+    date: String
+  }
+
   type User {
     username: String
     password: String
@@ -24,6 +31,7 @@ const typeDefs = gql`
   type Query {
     getUserByEmail(email: String!): User
     loginUser(email: String!, password: String!): User
+    getComentsByPost(id: Int): [Coment!]!
   }
 
   type Mutation {
