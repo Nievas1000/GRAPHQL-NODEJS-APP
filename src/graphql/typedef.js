@@ -36,6 +36,7 @@ const typeDefs = gql`
 
   type Mutation {
     registrerUser(email: String!, password: String!, username: String!): User
+    updateInfoProfile(id: Int!, description: String!, username: String!): String
   }
 `;
 

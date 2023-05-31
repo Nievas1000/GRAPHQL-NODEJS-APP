@@ -1,5 +1,5 @@
 const { getUserByEmail, loginUser } = require("./Queries/user");
-const { registrerUser } = require("./Mutations/user");
+const { registrerUser, updateInfoProfile } = require("./Mutations/user");
 const { getComentsByPost } = require("./Queries/post");
 
 const Query = {
@@ -10,6 +10,7 @@ const Query = {
 
 const Mutation = {
   registrerUser,
+  updateInfoProfile,
 };
 
 const resolvers = {

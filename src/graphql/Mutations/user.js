@@ -1,7 +1,11 @@
-const { createUser, getUserByMail } = require("../../model/userModel");
+const {
+  createUser,
+  getUserByMail,
+  updateInfo,
+} = require("../../model/userModel");
 const { encrypt } = require("../../Helpers/handleBcrypt");
 
-const registrerUser = async (root, args) => {
+const registrerUser = async (__, args) => {
   const { email, password, username } = args;
   const userExist = await getUserByMail(email);
   if (userExist.length == 0) {
@@ -13,11 +17,13 @@ const registrerUser = async (root, args) => {
   }
 };
 
-const uploadImage = async (root, args) => {
-  console.log(args);
+const updateInfoProfile = async (__, args) => {
+  const { id, description, username } = args;
+  const result = await updateInfo(id, description, username);
+  return "Updated!";
 };
 
 module.exports = {
   registrerUser,
-  uploadImage,
+  updateInfoProfile,
 };

@@ -36,8 +36,24 @@ const getUserByMail = (email) =>
     });
   });
 
+const updateInfo = (id, description, username) =>
+  new Promise((resolve, rejected) => {
+    db.query(
+      "UPDATE user SET username = ?, description = ?  WHERE id = ?",
+      [username, description, id],
+      (err, result) => {
+        if (err) {
+          rejected(err);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+
 module.exports = {
   createUser,
   getUsers,
   getUserByMail,
+  updateInfo,
 };
